@@ -1,0 +1,84 @@
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("button");
+
+let currentValue = "";
+let operator = "";
+let firstValue = "";
+
+/* Loop through all buttons */
+buttons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        let value = button.innerText;
+
+        // Clear
+        if (value === "C") {
+            currentValue = "";
+            firstValue = "";
+            operator = "";
+            display.value = "";
+            return;
+        }
+
+        // Delete last
+        if (value === "DEL") {
+            currentValue = currentValue.slice(0, -1);
+            display.value = currentValue;
+            return;
+        }
+
+        // Equal
+        if (value === "=") {
+
+            if (firstValue !== "" && operator !== "") {
+
+                let result;
+
+                let num1 = Number(firstValue);
+                let num2 = Number(currentValue);
+
+                if (operator === "+") {
+                    result = num1 + num2;
+                }
+
+                else if (operator === "-") {
+                    result = num1 - num2;
+                }
+
+                else if (operator === "*") {
+                    result = num1 * num2;
+                }
+
+                else if (operator === "/") {
+                    result = num1 / num2;
+                }
+
+                display.value = result;
+                currentValue = result.toString();
+                operator = "";
+                firstValue = "";
+            }
+
+            return;
+        }
+
+        // Operators
+        if (value === "+" || value === "-" || value === "*" || value === "/") {
+
+            if (currentValue !== "") {
+                firstValue = currentValue;
+                operator = value;
+                currentValue = "";
+            }
+
+            return;
+        }
+
+        // Numbers and dot
+        currentValue += value;
+        display.value = currentValue;
+
+    });
+
+});
